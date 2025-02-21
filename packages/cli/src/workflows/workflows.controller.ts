@@ -15,6 +15,7 @@ import { v4 as uuid } from 'uuid';
 import type { Project } from '@/databases/entities/project';
 import { SharedWorkflow } from '@/databases/entities/shared-workflow';
 import { WorkflowEntity } from '@/databases/entities/workflow-entity';
+import { FolderRepository } from '@/databases/repositories/folder.repository';
 import { ProjectRelationRepository } from '@/databases/repositories/project-relation.repository';
 import { ProjectRepository } from '@/databases/repositories/project.repository';
 import { SharedWorkflowRepository } from '@/databases/repositories/shared-workflow.repository';
@@ -59,7 +60,6 @@ import { WorkflowRequest } from './workflow.request';
 import { WorkflowService } from './workflow.service';
 import { EnterpriseWorkflowService } from './workflow.service.ee';
 import { CredentialsService } from '../credentials/credentials.service';
-import { FolderRepository } from '@/databases/repositories/folder.repository';
 
 @RestController('/workflows')
 export class WorkflowsController {

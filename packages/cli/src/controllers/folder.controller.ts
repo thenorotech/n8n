@@ -1,3 +1,6 @@
+/* eslint-disable n8n-local-rules/no-useless-catch-throw */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { CreateFolderDto } from '@n8n/api-types';
 import { Response } from 'express';
 

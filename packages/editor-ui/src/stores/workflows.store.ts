@@ -85,7 +85,7 @@ import type { PushPayload } from '@n8n/api-types';
 import { useTelemetry } from '@/composables/useTelemetry';
 import { TelemetryHelpers } from 'n8n-workflow';
 import { useWorkflowHelpers } from '@/composables/useWorkflowHelpers';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useSettingsStore } from './settings.store';
 import { clearPopupWindowState, openFormPopupWindow } from '@/utils/executionUtils';
 import { useNodeHelpers } from '@/composables/useNodeHelpers';
@@ -121,6 +121,7 @@ export const useWorkflowsStore = defineStore(STORES.WORKFLOWS, () => {
 	const uiStore = useUIStore();
 	const telemetry = useTelemetry();
 	const router = useRouter();
+	const route = useRoute();
 	const workflowHelpers = useWorkflowHelpers({ router });
 	const settingsStore = useSettingsStore();
 	const rootStore = useRootStore();
@@ -1458,6 +1459,12 @@ export const useWorkflowsStore = defineStore(STORES.WORKFLOWS, () => {
 
 		if (!sendData.projectId && projectStore.currentProjectId) {
 			(sendData as unknown as IDataObject).projectId = projectStore.currentProjectId;
+		}
+
+		const parentFolderId = route.query?.parentFolderId as string;
+
+		if (parentFolderId) {
+			sendData.parentFolderId = parentFolderId;
 		}
 
 		const newWorkflow = await makeRestApiRequest<IWorkflowDb>(

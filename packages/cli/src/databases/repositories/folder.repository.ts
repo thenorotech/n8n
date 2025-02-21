@@ -243,7 +243,7 @@ export class FolderRepository extends Repository<Folder> {
 					.subQuery()
 					.select('f.id')
 					.from(Folder, 'f')
-					.where((subQb) => {
+					.where((_) => {
 						const recursiveQuery = `
 							WITH RECURSIVE folder_path(id, parentFolderId) AS (
 								SELECT id, parentFolderId
