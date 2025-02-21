@@ -27,7 +27,12 @@ export class ProjectController {
 
 			if (payload.parentFolderId) {
 				parentFolder = await this.folderRepository.findOneOrFail({
-					where: { id: payload.parentFolderId, homeProject: { id: project.id } },
+					where: {
+						id: payload.parentFolderId,
+						homeProject: {
+							id: project.id,
+						},
+					},
 				});
 			}
 
@@ -59,6 +64,24 @@ export class ProjectController {
 			});
 
 			return folder;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	@Get('/:folderId/path')
+	@ProjectScope('folder:read')
+	async getFolderPathToRoot(
+		req: AuthenticatedRequest<{ projectId: string; folderId: string }>,
+		_res: Response,
+	) {
+		try {
+			const response = await this.folderRepository.getFolderPathTypeORM(
+				this.folderRepository,
+				req.params.folderId,
+			);
+
+			return response;
 		} catch (e) {
 			throw e;
 		}
