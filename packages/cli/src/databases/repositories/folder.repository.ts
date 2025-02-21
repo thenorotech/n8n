@@ -14,7 +14,17 @@ export class FolderRepository extends Repository<Folder> {
 		super(Folder, dataSource.manager);
 	}
 
-	async getMany(options: ListQuery.Options = {}): Promise<[Folder[], number]> {
+	async getManyAndCount(options: ListQuery.Options = {}): Promise<[Folder[], number]> {
+		const query = this.getManyQuery(options);
+		return await query.getManyAndCount();
+	}
+
+	async getMany(options: ListQuery.Options = {}): Promise<Folder[]> {
+		const query = this.getManyQuery(options);
+		return await query.getMany();
+	}
+
+	getManyQuery(options: ListQuery.Options = {}): SelectQueryBuilder<Folder> {
 		const query = this.createQueryBuilder('folder');
 
 		this.applySelections(query, options.select);
@@ -22,7 +32,7 @@ export class FolderRepository extends Repository<Folder> {
 		this.applySorting(query, options.sortBy);
 		this.applyPagination(query, options);
 
-		return await query.getManyAndCount();
+		return query;
 	}
 
 	private applySelections(
@@ -38,16 +48,15 @@ export class FolderRepository extends Repository<Folder> {
 
 	private applyDefaultSelect(query: SelectQueryBuilder<Folder>): void {
 		query
-			.leftJoinAndSelect('folder.project', 'project')
+			.leftJoinAndSelect('folder.homeProject', 'homeProject')
 			.leftJoinAndSelect('folder.parentFolder', 'parentFolder')
 			.leftJoinAndSelect('folder.tags', 'tags')
-			.leftJoinAndSelect('folder.workflows', 'workflows')
+			.loadRelationCountAndMap('folder.workflowsCount', 'folder.workflows')
 			.select([
 				'folder',
-				...this.getProjectFields('project'),
+				...this.getProjectFields('homeProject'),
 				...this.getTagFields(),
 				...this.getParentFolderFields('parentFolder'),
-				'workflows.id',
 			]);
 	}
 
@@ -75,8 +84,8 @@ export class FolderRepository extends Repository<Folder> {
 		select?: Record<string, boolean>,
 	): void {
 		if (select?.project) {
-			query.leftJoin('folder.project', 'project');
-			selections.push(...this.getProjectFields('project'));
+			query.leftJoin('folder.homeProject', 'homeProject');
+			selections.push(...this.getProjectFields('homeProject'));
 		}
 
 		if (select?.tags) {
@@ -89,9 +98,8 @@ export class FolderRepository extends Repository<Folder> {
 			selections.push(...this.getParentFolderFields('parentFolder'));
 		}
 
-		if (select?.workflows) {
-			query.leftJoinAndSelect('folder.workflows', 'workflows');
-			selections.push('workflows.id');
+		if (select?.workflowsCount) {
+			query.loadRelationCountAndMap('folder.workflowsCount', 'folder.workflows');
 		}
 	}
 
@@ -121,6 +129,16 @@ export class FolderRepository extends Repository<Folder> {
 		query: SelectQueryBuilder<Folder>,
 		filter: ListQuery.Options['filter'],
 	): void {
+		if (filter?.folderIds && Array.isArray(filter.folderIds)) {
+			query.andWhere('folder.id IN (:...folderIds)', {
+				/*
+				 * If folderIds is empty, add a dummy value to prevent an error
+				 * when using the IN operator with an empty array.
+				 */
+				folderIds: !filter?.folderIds.length ? [''] : filter?.folderIds,
+			});
+		}
+
 		if (filter?.projectId) {
 			query.andWhere('folder.projectId = :projectId', { projectId: filter.projectId });
 		}
@@ -131,7 +149,9 @@ export class FolderRepository extends Repository<Folder> {
 			});
 		}
 
-		if (filter?.parentFolderId) {
+		if (filter?.parentFolderId === '0') {
+			query.andWhere('folder.parentFolderId IS NULL');
+		} else if (filter?.parentFolderId) {
 			query.andWhere('folder.parentFolderId = :parentFolderId', {
 				parentFolderId: filter.parentFolderId,
 			});
