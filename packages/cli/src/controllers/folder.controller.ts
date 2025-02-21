@@ -4,6 +4,7 @@
 import { CreateFolderDto } from '@n8n/api-types';
 import { Response } from 'express';
 
+import type { SimpleFolderNode } from '@/databases/repositories/folder.repository';
 import { FolderRepository } from '@/databases/repositories/folder.repository';
 import { Post, RestController, ProjectScope, Body, Get } from '@/decorators';
 import { AuthenticatedRequest } from '@/requests';
@@ -77,7 +78,7 @@ export class ProjectController {
 	async getFolderPathToRoot(
 		req: AuthenticatedRequest<{ projectId: string; folderId: string }>,
 		_res: Response,
-	) {
+	): Promise<SimpleFolderNode[]> {
 		try {
 			const response = await this.folderRepository.getFolderPathTypeORM(
 				this.folderRepository,

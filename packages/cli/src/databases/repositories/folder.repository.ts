@@ -11,7 +11,7 @@ import { Folder } from '../entities/folder';
 import { FolderTagMapping } from '../entities/folder-tag-mapping';
 import { TagEntity } from '../entities/tag-entity';
 
-interface SimpleFolderNode {
+export interface SimpleFolderNode {
 	id: string;
 	name: string;
 	children: SimpleFolderNode[];
