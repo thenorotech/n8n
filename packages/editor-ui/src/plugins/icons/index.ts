@@ -29,6 +29,7 @@ import {
 	faCheckSquare,
 	faChevronDown,
 	faChevronUp,
+	faCircle,
 	faChevronLeft,
 	faChevronRight,
 	faCode,
@@ -72,6 +73,7 @@ import {
 	faFlask,
 	faFolder,
 	faFolderOpen,
+	faFolderPlus,
 	faFont,
 	faGlobeAmericas,
 	faGift,
@@ -167,6 +169,8 @@ import {
 	faPowerOff,
 	faPaperPlane,
 	faExclamationCircle,
+	faMinusCircle,
+	faAdjust,
 } from '@fortawesome/free-solid-svg-icons';
 import { faVariable, faXmark, faVault, faRefresh } from './custom';
 import { faStickyNote } from '@fortawesome/free-regular-svg-icons';
@@ -207,6 +211,7 @@ export const FontAwesomePlugin: Plugin = {
 		addIcon(faChevronRight);
 		addIcon(faChevronDown);
 		addIcon(faChevronUp);
+		addIcon(faCircle);
 		addIcon(faCode);
 		addIcon(faCodeBranch);
 		addIcon(faCog);
@@ -251,6 +256,7 @@ export const FontAwesomePlugin: Plugin = {
 		addIcon(faFlask);
 		addIcon(faFolder);
 		addIcon(faFolderOpen);
+		addIcon(faFolderPlus);
 		addIcon(faFont);
 		addIcon(faGift);
 		addIcon(faGlobe);
@@ -348,6 +354,8 @@ export const FontAwesomePlugin: Plugin = {
 		addIcon(faPowerOff);
 		addIcon(faPaperPlane);
 		addIcon(faRefresh);
+		addIcon(faMinusCircle);
+		addIcon(faAdjust);
 
 		app.component('FontAwesomeIcon', FontAwesomeIcon);
 	},
