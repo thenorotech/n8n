@@ -728,6 +728,7 @@ const addFolder = async () => {
 					</N8nText>
 				</N8nCard>
 				<N8nCard
+					v-if="showFolders"
 					:class="$style.emptyStateCard"
 					hoverable
 					data-test-id="new-workflow-card"
