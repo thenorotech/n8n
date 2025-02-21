@@ -27,7 +27,7 @@ export class ProjectController {
 
 			if (payload.parentFolderId) {
 				parentFolder = await this.folderRepository.findOneOrFail({
-					where: { id: payload.parentFolderId, homeProject: project },
+					where: { id: payload.parentFolderId, homeProject: { id: project.id } },
 				});
 			}
 
