@@ -143,7 +143,7 @@ export interface FrontendSettings {
 	};
 	hideUsagePage: boolean;
 	license: {
-		planName?: string;
+		planName: 'enterprise';
 		consumerId: string;
 		environment: 'development' | 'production' | 'staging';
 	};

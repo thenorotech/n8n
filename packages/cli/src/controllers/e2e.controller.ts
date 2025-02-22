@@ -13,7 +13,6 @@ import { UserRepository } from '@/databases/repositories/user.repository';
 import { Patch, Post, RestController } from '@/decorators';
 import { MessageEventBus } from '@/eventbus/message-event-bus/message-event-bus';
 import type { BooleanLicenseFeature, NumericLicenseFeature } from '@/interfaces';
-import type { FeatureReturnType } from '@/license';
 import { License } from '@/license';
 import { MfaService } from '@/mfa/mfa.service';
 import { Push } from '@/push';
@@ -143,19 +142,7 @@ export class E2EController {
 		license.isFeatureEnabled = (feature: BooleanLicenseFeature) =>
 			this.enabledFeatures[feature] ?? false;
 
-		// Ugly hack to satisfy biome parser
-		const getFeatureValue = <T extends keyof FeatureReturnType>(
-			feature: T,
-		): FeatureReturnType[T] => {
-			if (feature in this.numericFeatures) {
-				return this.numericFeatures[feature as NumericLicenseFeature] as FeatureReturnType[T];
-			} else {
-				return UNLIMITED_LICENSE_QUOTA as FeatureReturnType[T];
-			}
-		};
-		license.getFeatureValue = getFeatureValue;
-
-		license.getPlanName = () => 'Enterprise';
+		license.getPlanName = () => 'enterprise';
 	}
 
 	@Post('/reset', { skipAuth: true })

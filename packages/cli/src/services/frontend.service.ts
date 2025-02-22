@@ -200,6 +200,7 @@ export class FrontendService {
 			},
 			hideUsagePage: config.getEnv('hideUsagePage'),
 			license: {
+				planName: 'enterprise',
 				consumerId: 'unknown',
 				environment: this.globalConfig.license.tenantId === 1 ? 'production' : 'staging',
 			},
