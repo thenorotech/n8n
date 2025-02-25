@@ -1,12 +1,14 @@
 ARG NODE_VERSION=20
 
 # 1. Create an image to build n8n
-FROM --platform=linux/amd64 n8nio/base:${NODE_VERSION} AS builder
+FROM n8nio/base:${NODE_VERSION} AS builder
 
 # Build the application from source
 WORKDIR /src
 COPY . /src
 RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store --mount=type=cache,id=pnpm-metadata,target=/root/.cache/pnpm/metadata DOCKER_BUILD=true pnpm install --frozen-lockfile
+RUN mkdir -p /src/packages/@n8n/imap/.turbo /src/packages/@n8n/benchmark/.turbo
+RUN chmod -R 777 /src/packages/@n8n/imap/.turbo /src/packages/@n8n/benchmark/.turbo
 RUN pnpm build
 
 # Delete all dev dependencies
@@ -58,6 +60,6 @@ RUN \
 	mkdir .n8n && \
 	chown node:node .n8n
 
-ENV SHELL /bin/sh
+ENV SHELL=/bin/sh
 USER node
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]

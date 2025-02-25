@@ -321,4 +321,11 @@ export class License {
 	getWorkflowHistoryPruneLimit(): number {
 		return Number.MAX_SAFE_INTEGER;
 	}
+
+	/**
+	 * Retorna todos los planes disponibles, siempre incluyendo "enterprise" como default.
+	 */
+	getAvailablePlans(): string[] {
+		return ['enterprise'];
+	}
 }
