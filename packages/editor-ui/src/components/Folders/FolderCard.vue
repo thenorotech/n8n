@@ -166,7 +166,7 @@ const onBreadcrumbsItemClick = async (item: PathItem) => {
 						<n8n-breadcrumbs
 							:items="breadCrumbsItems"
 							:hidden-items="hiddenItems"
-							:path-truncated="breadCrumbsItems[0].parentFolder"
+							:path-truncated="breadCrumbsItems[0]?.parentFolder"
 							:show-border="true"
 							:highlight-last-item="false"
 							theme="small"
