@@ -150,7 +150,7 @@ const folderActions = ref<Array<UserAction & { onlyAvailableOn?: 'mainBreadcrumb
 	{
 		label: 'Delete',
 		value: FOLDER_LIST_ITEM_ACTIONS.DELETE,
-		disabled: true,
+		disabled: false,
 	},
 ]);
 const folderCardActions = computed(() =>
@@ -644,6 +644,10 @@ const onBreadCrumbsAction = async (action: string) => {
 		case FOLDER_LIST_ITEM_ACTIONS.CREATE_WORKFLOW:
 			addWorkflow();
 			break;
+		case FOLDER_LIST_ITEM_ACTIONS.DELETE:
+			if (!route.params.folderId) return;
+			uiStore.openDeleteFolderModal(route.params.folderId as string);
+			break;
 		default:
 			break;
 	}
@@ -666,6 +670,9 @@ const onFolderCardAction = async (payload: { action: string; folderId: string })
 				name: VIEWS.NEW_WORKFLOW,
 				query: { projectId: route.params?.projectId, parentFolderId: clickedFolder.id },
 			});
+			break;
+		case FOLDER_LIST_ITEM_ACTIONS.DELETE:
+			uiStore.openDeleteFolderModal(clickedFolder.id);
 			break;
 		default:
 			break;

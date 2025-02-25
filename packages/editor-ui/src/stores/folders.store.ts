@@ -57,6 +57,10 @@ export const useFoldersStore = defineStore(STORES.FOLDERS, () => {
 		return tree;
 	}
 
+	async function deleteFolder(projectId: string, folderId: string) {
+		await workflowsApi.deleteFolder(rootStore.restApiContext, projectId, folderId);
+	}
+
 	function extractFoldersForCache(
 		items: FolderTreeResponseItem[],
 		parentFolderId?: string,
@@ -89,5 +93,6 @@ export const useFoldersStore = defineStore(STORES.FOLDERS, () => {
 		getCachedFolder,
 		createFolder,
 		getFolderPath,
+		deleteFolder,
 	};
 });
