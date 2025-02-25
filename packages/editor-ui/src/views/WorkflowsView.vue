@@ -130,7 +130,7 @@ const folderActions = ref<Array<UserAction & { onlyAvailableOn?: 'mainBreadcrumb
 	{
 		label: 'Rename',
 		value: FOLDER_LIST_ITEM_ACTIONS.RENAME,
-		disabled: true,
+		disabled: false,
 	},
 	{
 		label: 'Move to Folder',
@@ -561,13 +561,46 @@ const onWorkflowActiveToggle = (data: { id: string; active: boolean }) => {
 	workflow.active = data.active;
 };
 
+const renameFolder = async (folderId: string) => {
+	const folder = foldersStore.getCachedFolder(folderId);
+	if (!folder || !currentProject.value) return;
+	const promptResponsePromise = message.prompt(
+		i18n.baseText('folders.rename.message', { interpolate: { folderName: folder.name } }),
+		{
+			confirmButtonText: i18n.baseText('generic.rename'),
+			cancelButtonText: i18n.baseText('generic.cancel'),
+			inputErrorMessage: i18n.baseText('folders.invalidName.message'),
+			inputValue: folder.name,
+			inputPattern: /^[a-zA-Z0-9-_ ]{1,100}$/,
+			customClass: 'rename-folder-modal',
+		},
+	);
+	const promptResponse = await promptResponsePromise;
+	if (promptResponse.action === MODAL_CONFIRM) {
+		const newFolderName = promptResponse.value;
+		try {
+			await foldersStore.renameFolder(currentProject.value?.id, folderId, newFolderName);
+			foldersStore.foldersCache[folderId].name = newFolderName;
+			toast.showMessage({
+				title: i18n.baseText('folders.rename.success.message', {
+					interpolate: { folderName: newFolderName },
+				}),
+				type: 'success',
+			});
+			await fetchWorkflows();
+		} catch (error) {
+			toast.showError(error, i18n.baseText('folders.rename.error.title'));
+		}
+	}
+};
+
 const createFolder = async (parent: { id: string; name: string; type: 'project' | 'folder' }) => {
 	const promptResponsePromise = message.prompt(
 		i18n.baseText('folders.add.to.parent.message', { interpolate: { parent: parent.name } }),
 		{
 			confirmButtonText: i18n.baseText('generic.create'),
 			cancelButtonText: i18n.baseText('generic.cancel'),
-			inputErrorMessage: i18n.baseText('folders.add.invalidName.message'),
+			inputErrorMessage: i18n.baseText('folders.invalidName.message'),
 			inputValue: '',
 			inputPattern: /^[a-zA-Z0-9-_ ]{1,100}$/,
 			customClass: 'add-folder-modal',
@@ -648,6 +681,10 @@ const onBreadCrumbsAction = async (action: string) => {
 			if (!route.params.folderId) return;
 			uiStore.openDeleteFolderModal(route.params.folderId as string);
 			break;
+		case FOLDER_LIST_ITEM_ACTIONS.RENAME:
+			if (!route.params.folderId) return;
+			await renameFolder(route.params.folderId as string);
+			break;
 		default:
 			break;
 	}
@@ -673,6 +710,9 @@ const onFolderCardAction = async (payload: { action: string; folderId: string })
 			break;
 		case FOLDER_LIST_ITEM_ACTIONS.DELETE:
 			uiStore.openDeleteFolderModal(clickedFolder.id);
+			break;
+		case FOLDER_LIST_ITEM_ACTIONS.RENAME:
+			await renameFolder(clickedFolder.id);
 			break;
 		default:
 			break;

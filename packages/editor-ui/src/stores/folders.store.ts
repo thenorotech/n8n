@@ -61,6 +61,10 @@ export const useFoldersStore = defineStore(STORES.FOLDERS, () => {
 		await workflowsApi.deleteFolder(rootStore.restApiContext, projectId, folderId);
 	}
 
+	async function renameFolder(projectId: string, folderId: string, name: string) {
+		await workflowsApi.renameFolder(rootStore.restApiContext, projectId, folderId, name);
+	}
+
 	function extractFoldersForCache(
 		items: FolderTreeResponseItem[],
 		parentFolderId?: string,
@@ -94,5 +98,6 @@ export const useFoldersStore = defineStore(STORES.FOLDERS, () => {
 		createFolder,
 		getFolderPath,
 		deleteFolder,
+		renameFolder,
 	};
 });
