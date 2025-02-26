@@ -54,7 +54,7 @@ jobs:
           DOCKER_BUILD_SUMMARY: false
         with:
           context: .
-          file: ./docker/images/n8n-base/Dockerfile
+          file: ./docker/images/n8n-custom/Dockerfile
           platforms: linux/amd64
           provenance: false
           push: true
