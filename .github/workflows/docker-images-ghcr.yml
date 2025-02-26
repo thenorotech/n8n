@@ -1,4 +1,4 @@
-name: Docker Custom Image CI
+name: Docker Custom Image CI GHCR
 run-name: Build ${{ inputs.branch }} - ${{ inputs.user }}
 
 on:
@@ -41,6 +41,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Set IMAGE_NAME_LOWER
+        run: echo "IMAGE_NAME_LOWER=${IMAGE_NAME,,}" >> $GITHUB_ENV
 
       - name: Build and push image to GHCR
         uses: docker/build-push-action@v6.11.0
@@ -49,14 +52,12 @@ jobs:
         with:
           context: .
           file: ./docker/images/n8n-custom/Dockerfile
-          build-args: |
-            N8N_RELEASE_TYPE=development
           platforms: linux/amd64
           provenance: false
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ghcr.io/${{ github.repository_owner }}/n8n:${{ inputs.tag }}
+          tags: ${{ env.IMAGE_NAME_LOWER }}:latest,${{ env.IMAGE_NAME_LOWER }}:${{ github.sha }}
 
       - name: Call Success URL - optionally
         if: ${{ github.event.inputs.success-url != '' }}
