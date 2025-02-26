@@ -511,7 +511,7 @@ export class Workflow {
 				// Ignore connections for nodes that don't exist in this workflow
 				if (!(connection.node in this.nodes)) return;
 
-				addNodes = this.getHighestNode(connection.node, type, undefined, checkedNodes);
+				addNodes = this.getHighestNode(connection.node, undefined, checkedNodes);
 
 				if (addNodes.length === 0) {
 					// The checked node does not have any further parents so add it
