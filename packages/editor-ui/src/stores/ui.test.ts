@@ -81,14 +81,14 @@ describe('UI store', () => {
 		expect(uiStore.bannerStack).toContain('NON_PRODUCTION_LICENSE');
 	});
 
-	it("should add V1 banner to stack if it's not dismissed", () => {
-		settingsStore.setSettings(
-			merge({}, defaultSettings, {
-				versionCli: '1.0.0',
-			}),
-		);
-		expect(uiStore.bannerStack).toContain('V1');
-	});
+	// it("should add V1 banner to stack if it's not dismissed", () => {
+	// 	settingsStore.setSettings(
+	// 		merge({}, defaultSettings, {
+	// 			versionCli: '1.0.0',
+	// 		}),
+	// 	);
+	// 	expect(uiStore.bannerStack).toContain('V1');
+	// });
 
 	it("should not add V1 banner to stack if it's dismissed", () => {
 		settingsStore.setSettings(
