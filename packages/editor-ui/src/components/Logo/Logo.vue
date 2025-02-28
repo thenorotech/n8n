@@ -109,7 +109,7 @@ onMounted(() => {
 }
 
 .sidebarExpanded .logo {
-	width: 40px;
+	width: 30px;
 	height: 30px;
 	padding: 0 var(--spacing-4xs);
 }
