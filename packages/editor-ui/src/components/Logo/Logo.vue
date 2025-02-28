@@ -63,8 +63,8 @@ onMounted(() => {
 
 <template>
 	<div :class="containerClasses" data-test-id="n8n-logo">
-		<LogoIcon :class="$style.logo" ref="logo" />
 		<LogoText v-if="showLogoText" :class="$style.logoText" />
+		<LogoIcon :class="$style.logo" ref="logo" />
 		<div v-if="showReleaseChannelTag" size="small" round :class="$style.releaseChannelTag">
 			{{ releaseChannel }}
 		</div>
@@ -105,11 +105,13 @@ onMounted(() => {
 }
 
 .sidebar {
-	transform: scale(1.3);
+	transform: scale(1);
 }
 
 .sidebarExpanded .logo {
-	margin-left: var(--spacing-xs);
+	width: 40px;
+	height: 30px;
+	padding: 0 var(--spacing-4xs);
 }
 
 .sidebarCollapsed .logo {
