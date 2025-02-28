@@ -68,6 +68,7 @@ const showAddFirstProject = computed(
 				:active-tab="projectsStore.projectNavActiveId"
 				mode="tabs"
 				data-test-id="project-home-menu-item"
+				:class="$style.menuItem"
 			/>
 		</ElMenu>
 		<hr v-if="projectsStore.isTeamProjectFeatureEnabled" class="mt-m mb-m" />
@@ -202,7 +203,6 @@ const showAddFirstProject = computed(
 <style lang="scss" scoped>
 .home {
 	padding: 0 var(--spacing-xs);
-
 	:deep(.el-menu-item) {
 		padding: var(--spacing-m) var(--spacing-xs) !important;
 	}

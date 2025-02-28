@@ -19,7 +19,7 @@ const initialState = {
 		settings: merge({}, SETTINGS_STORE_DEFAULT_STATE.settings),
 	},
 	[STORES.UI]: {
-		bannerStack: ['TRIAL_OVER', 'V1', 'NON_PRODUCTION_LICENSE', 'EMAIL_CONFIRMATION'],
+		bannerStack: ['TRIAL_OVER', 'V1', 'EMAIL_CONFIRMATION'],
 	},
 	[STORES.USERS]: {
 		currentUserId: 'aaa-bbb',

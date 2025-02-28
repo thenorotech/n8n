@@ -50,13 +50,7 @@ describe('DismissBannerRequestDto', () => {
 
 	describe('Exhaustive banner name check', () => {
 		test('should have all banner names defined', () => {
-			const expectedBanners = [
-				'V1',
-				'TRIAL_OVER',
-				'TRIAL',
-				'NON_PRODUCTION_LICENSE',
-				'EMAIL_CONFIRMATION',
-			];
+			const expectedBanners = ['V1', 'TRIAL_OVER', 'TRIAL', 'EMAIL_CONFIRMATION'];
 
 			expect(bannerNameSchema.options).toEqual(expectedBanners);
 		});
