@@ -23,7 +23,7 @@ import type { RouteLocation, RouteLocationRaw } from 'vue-router';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useLocalStorage } from '@vueuse/core';
-import GithubButton from 'vue-github-button';
+// import GithubButton from 'vue-github-button';
 
 const router = useRouter();
 const route = useRoute();
@@ -89,9 +89,9 @@ const readOnly = computed(() => sourceControlStore.preferences.branchReadOnly);
 const isEnterprise = computed(
 	() => settingsStore.isQueueModeEnabled && settingsStore.isWorkerViewAvailable,
 );
-const showGitHubButton = computed(
-	() => !isEnterprise.value && !settingsStore.settings.inE2ETests && !githubButtonHidden.value,
-);
+// const showGitHubButton = computed(
+// 	() => !isEnterprise.value && !settingsStore.settings.inE2ETests && !githubButtonHidden.value,
+// );
 
 watch(route, (to, from) => {
 	syncTabsWithRoute(to, from);
@@ -244,7 +244,7 @@ function hideGithubButton() {
 				@update:model-value="onTabSelected"
 			/>
 		</div>
-		<div v-if="showGitHubButton" class="github-button hidden-sm-and-down">
+		<!-- <div v-if="showGitHubButton" class="github-button hidden-sm-and-down">
 			<div class="github-button-container">
 				<GithubButton
 					href="https://github.com/n8n-io/n8n"
@@ -262,7 +262,7 @@ function hideGithubButton() {
 					@click="hideGithubButton"
 				/>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
