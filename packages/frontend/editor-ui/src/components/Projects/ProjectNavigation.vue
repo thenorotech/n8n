@@ -62,10 +62,10 @@ const showAddFirstProject = computed(
 <template>
 	<div :class="$style.projects">
 		<ElMenu :collapse="props.collapsed" class="home">
+			<!-- Se desactiva el color de la home -->
 			<N8nMenuItem
 				:item="home"
 				:compact="props.collapsed"
-				:active-tab="projectsStore.projectNavActiveId"
 				mode="tabs"
 				data-test-id="project-home-menu-item"
 				:class="$style.menuItem"

@@ -36,11 +36,13 @@ defineExpose({
 			:teleported="false"
 			@action="emit('action', $event)"
 		>
+			<!-- Cambio de color -->
 			<N8nIconButton
 				:disabled="disabled"
 				:class="[$style.buttonGroupDropdown]"
 				icon="angle-down"
 				:type="type ?? 'primary'"
+				:style="{ color: '#18181B !important' }"
 			/>
 		</N8nActionToggle>
 	</div>
@@ -49,7 +51,6 @@ defineExpose({
 <style lang="scss" module>
 .buttonGroup {
 	display: inline-flex;
-
 	:global(> .button) {
 		border-right: 1px solid var(--button-font-color, var(--color-button-primary-font));
 

@@ -154,8 +154,10 @@ const onSelect = (action: string) => {
 						:disabled="sourceControlStore.preferences.branchReadOnly"
 						@action="onSelect"
 					>
+						<!-- Cambio de color -->
 						<N8nButton
 							data-test-id="add-resource-workflow"
+							:style="{ color: '#18181B !important' }"
 							v-bind="createWorkflowButton"
 							@click="onSelect(ACTION_TYPES.WORKFLOW)"
 						/>

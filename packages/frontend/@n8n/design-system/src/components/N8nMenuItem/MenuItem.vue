@@ -159,18 +159,19 @@ const isItemActive = (item: IMenuItem): boolean => {
 </template>
 
 <style module lang="scss">
-// Element menu-item overrides
+// Element menu-item overrides cambio de color de menu
 :global(.el-menu-item),
 :global(.el-sub-menu__title) {
 	--menu-font-color: var(--color-text-base);
 	--menu-item-active-background-color: var(--color-foreground-red);
-	--menu-item-active-font-color: var(--color-text-dark);
+	--menu-item-active-font-color: #18181b;
 	--menu-item-hover-fill: var(--color-foreground-red);
-	--menu-item-hover-font-color: var(--color-text-dark);
+	--menu-item-hover-font-color: #18181b !important;
 	--menu-item-height: 35px;
 	--sub-menu-item-height: 27px;
 }
 
+//cambio de color de submenu
 .submenu {
 	background: none !important;
 
@@ -196,7 +197,7 @@ const isItemActive = (item: IMenuItem): boolean => {
 
 		&:hover {
 			.icon {
-				color: var(--color-text-dark);
+				color: #18181b !important;
 			}
 		}
 	}
@@ -207,7 +208,6 @@ const isItemActive = (item: IMenuItem): boolean => {
 		margin: var(--spacing-2xs) 0 !important;
 		padding-left: var(--spacing-l) !important;
 		user-select: none;
-
 		&:hover {
 			.icon {
 				color: var(--color-text-dark);
@@ -226,8 +226,9 @@ const isItemActive = (item: IMenuItem): boolean => {
 
 	&:hover {
 		background-color: var(--color-foreground-red) !important;
+		color: #18181b !important;
 		svg {
-			color: var(--color-text-dark) !important;
+			color: #18181b !important;
 		}
 		&:global(.el-sub-menu) {
 			background-color: unset !important;
