@@ -164,9 +164,9 @@ const isItemActive = (item: IMenuItem): boolean => {
 :global(.el-sub-menu__title) {
 	--menu-font-color: var(--color-text-base);
 	--menu-item-active-background-color: var(--color-foreground-red);
-	--menu-item-active-font-color: #18181b;
+	--menu-item-active-font-color: var(--color-text-dark);
 	--menu-item-hover-fill: var(--color-foreground-red);
-	--menu-item-hover-font-color: #18181b !important;
+	--menu-item-hover-font-color: var(--color-text-dark);
 	--menu-item-height: 35px;
 	--sub-menu-item-height: 27px;
 }
@@ -197,7 +197,7 @@ const isItemActive = (item: IMenuItem): boolean => {
 
 		&:hover {
 			.icon {
-				color: #18181b !important;
+				color: var(--color-text-dark);
 			}
 		}
 	}
@@ -225,10 +225,10 @@ const isItemActive = (item: IMenuItem): boolean => {
 	}
 
 	&:hover {
-		background-color: var(--color-foreground-red) !important;
-		color: #18181b !important;
+		color: var(--color-text-dark-hover) !important;
+		background-color: var(--color-foreground-base-hover) !important;
 		svg {
-			color: #18181b !important;
+			color: var(--color-text-dark-hover) !important;
 		}
 		&:global(.el-sub-menu) {
 			background-color: unset !important;
@@ -239,7 +239,7 @@ const isItemActive = (item: IMenuItem): boolean => {
 .active {
 	&,
 	& :global(.el-sub-menu__title) {
-		background-color: var(--color-foreground-red);
+		background-color: var(--color-primary) !important;
 		border-radius: var(--border-radius-base);
 		.icon {
 			color: var(--color-text-dark);

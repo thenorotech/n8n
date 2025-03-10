@@ -42,7 +42,6 @@ defineExpose({
 				:class="[$style.buttonGroupDropdown]"
 				icon="angle-down"
 				:type="type ?? 'primary'"
-				:style="{ color: '#18181B !important' }"
 			/>
 		</N8nActionToggle>
 	</div>

@@ -66,6 +66,7 @@ const showAddFirstProject = computed(
 			<N8nMenuItem
 				:item="home"
 				:compact="props.collapsed"
+				:active-tab="projectsStore.projectNavActiveId"
 				mode="tabs"
 				data-test-id="project-home-menu-item"
 				:class="$style.menuItem"

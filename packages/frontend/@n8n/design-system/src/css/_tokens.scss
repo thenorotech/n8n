@@ -44,6 +44,7 @@
 
 	// Text
 	--color-text-dark: var(--prim-gray-740);
+	--color-text-dark-hover: var(--prim-gray-0);
 	--color-text-base: var(--prim-gray-540);
 	--color-text-light: var(--prim-gray-420);
 	--color-text-lighter: var(--prim-gray-120);
@@ -53,7 +54,7 @@
 	// Foreground
 	--color-foreground-xdark: var(--prim-gray-490);
 	--color-foreground-dark: var(--prim-gray-200);
-	--color-foreground-base: #e64b40;
+	--color-foreground-base: var(--prim-gray-200);
 	--color-foreground-light: var(--prim-gray-70);
 	--color-foreground-xlight: var(--prim-gray-0);
 
@@ -61,8 +62,9 @@
 	--color-background-dark: var(--prim-gray-820);
 	--color-background-medium: var(--prim-gray-120);
 	--color-background-base: var(--prim-gray-40);
+	--color-foreground-base-hover: var(--prim-color-primary);
 	--color-background-light-base: var(--prim-gray-25);
-	--color-background-light: #18181b;
+	--color-background-light: var(--prim-gray-0);
 	--color-background-xlight: var(--prim-gray-0);
 
 	// Secondary tokens
@@ -243,9 +245,9 @@
 	--color-button-secondary-font: var(--prim-gray-670);
 	--color-button-secondary-border: var(--prim-gray-320);
 	--color-button-secondary-background: var(--prim-gray-0);
-	--color-button-secondary-hover-active-focus-font: var(--prim-color-primary-shade-100);
+	--color-button-secondary-hover-active-focus-font: var(--prim-gray-0); // Cambio de color de texto
 	--color-button-secondary-hover-active-focus-border: var(--prim-color-primary);
-	--color-button-secondary-hover-background: var(--prim-color-primary-tint-300);
+	--color-button-secondary-hover-background: var(--prim-color-primary); // Cambio de color de fondo
 	--color-button-secondary-active-focus-background: var(--prim-color-primary-tint-270);
 	--color-button-secondary-focus-outline: var(--prim-gray-120);
 	--color-button-secondary-disabled-font: var(--prim-gray-200);

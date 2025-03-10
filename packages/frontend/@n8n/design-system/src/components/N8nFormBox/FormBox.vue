@@ -69,7 +69,6 @@ const onSecondaryButtonClick = (event: Event) => emit('secondaryClick', event);
 				:loading="buttonLoading"
 				data-test-id="form-submit-button"
 				size="large"
-				:style="{ color: '#18181B !important' }"
 				@click="onButtonClick"
 			/>
 		</div>
