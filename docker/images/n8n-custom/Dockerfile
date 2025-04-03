@@ -27,6 +27,9 @@ ENV NODE_ENV=production
 ARG N8N_RELEASE_TYPE=dev
 ENV N8N_RELEASE_TYPE=${N8N_RELEASE_TYPE}
 
+# Instalación de bash y python3 (para imágenes basadas en Debian)
+RUN apt-get update && apt-get install -y bash python3 && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /home/node
 COPY --from=builder /compiled /usr/local/lib/node_modules/n8n
 COPY docker/images/n8n/docker-entrypoint.sh /
