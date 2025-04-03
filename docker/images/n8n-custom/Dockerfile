@@ -30,7 +30,7 @@ ARG N8N_RELEASE_TYPE=dev
 ENV N8N_RELEASE_TYPE=${N8N_RELEASE_TYPE}
 
 # Instalación de bash y python3 para imágenes basadas en Alpine
-RUN apk update && apk add --no-cache bash python3 py3-pip && ln -s /usr/bin/pip3 /usr/bin/pip
+RUN apk update && apk add --no-cache bash python3 py3-pip
 
 WORKDIR /home/node
 COPY --from=builder /compiled /usr/local/lib/node_modules/n8n
