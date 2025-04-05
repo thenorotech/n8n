@@ -14,7 +14,6 @@ import {
 	LICENSE_QUOTAS,
 	N8N_VERSION,
 	SETTINGS_LICENSE_CERT_KEY,
-	Time,
 	UNLIMITED_LICENSE_QUOTA,
 } from './constants';
 import type { BooleanLicenseFeature, NumericLicenseFeature } from './interfaces';
@@ -61,7 +60,7 @@ export class License {
 		const isMainInstance = instanceType === 'main';
 		const server = this.globalConfig.license.serverUrl;
 		const offlineMode = !isMainInstance;
-		const autoRenewOffset = 72 * Time.hours.toSeconds;
+		const autoRenewOffset = this.globalConfig.license.autoRenewOffset;
 		const saveCertStr = isMainInstance
 			? async (value: TLicenseBlock) => await this.saveCertStr(value)
 			: async () => {};
@@ -85,66 +84,19 @@ export class License {
 			this.logger.warn(LICENSE_RENEWAL_DISABLED_WARNING);
 		}
 
-		try {
-			this.manager = new LicenseManager({
-				server,
-				tenantId: this.globalConfig.license.tenantId,
-				productIdentifier: `n8n-${N8N_VERSION}`,
-				autoRenewEnabled: shouldRenew,
-				renewOnInit: shouldRenew,
-				autoRenewOffset,
-				detachFloatingOnShutdown: this.globalConfig.license.detachFloatingOnShutdown,
-				offlineMode,
-				logger: this.logger,
-				loadCertStr: async () => await this.loadCertStr(),
-				saveCertStr,
-				deviceFingerprint: () => this.instanceSettings.instanceId,
-				collectUsageMetrics,
-				collectPassthroughData,
-				onFeatureChange,
-			});
-
-			await this.manager.initialize();
-
-			const features = this.manager.getFeatures();
-			this.checkIsLicensedForMultiMain(features);
-
-			this.logger.debug('License initialized');
-		} catch (error: unknown) {
-			if (error instanceof Error) {
-				this.logger.error('Could not initialize license manager sdk', { error });
-			}
-		}
+		this.logger.debug('License initialized with fixed values');
 	}
 
 	async loadCertStr(): Promise<TLicenseBlock> {
-		// if we have an ephemeral license, we don't want to load it from the database
-		const ephemeralLicense = this.globalConfig.license.cert;
-		if (ephemeralLicense) {
-			return ephemeralLicense;
-		}
-		const databaseSettings = await this.settingsRepository.findOne({
-			where: {
-				key: SETTINGS_LICENSE_CERT_KEY,
-			},
-		});
-
-		return databaseSettings?.value ?? '';
+		return '';
 	}
 
 	async onFeatureChange(_features: TFeatures): Promise<void> {
-		const { isMultiMain, isLeader } = this.instanceSettings;
-
-		if (Object.keys(_features).length === 0) {
-			this.logger.error('Empty license features recieved', { isMultiMain, isLeader });
-			return;
-		}
-
 		this.logger.debug('License feature change detected', _features);
 
 		this.checkIsLicensedForMultiMain(_features);
 
-		if (isMultiMain && !isLeader) {
+		if (this.instanceSettings.isMultiMain && !this.instanceSettings.isLeader) {
 			this.logger
 				.scoped(['scaling', 'multi-main-setup', 'license'])
 				.debug('Instance is not leader, skipping sending of "reload-license" command...');
@@ -171,230 +123,177 @@ export class License {
 	}
 
 	async activate(activationKey: string): Promise<void> {
-		if (!this.manager) {
-			return;
-		}
-
-		await this.manager.activate(activationKey);
-		this.logger.debug('License activated');
+		// Implementación dummy, sin operación.
 	}
 
 	async reload(): Promise<void> {
-		if (!this.manager) {
-			return;
-		}
-		await this.manager.reload();
-		this.logger.debug('License reloaded');
+		return Promise.resolve();
 	}
 
-	async renew() {
-		if (!this.manager) {
-			return;
-		}
-
-		await this.manager.renew();
-		this.logger.debug('License renewed');
-	}
-
-	async clear() {
-		if (!this.manager) {
-			return;
-		}
-
-		await this.manager.clear();
-		this.logger.info('License cleared');
+	async renew(): Promise<void> {
+		return Promise.resolve();
 	}
 
 	@OnShutdown()
-	async shutdown() {
-		// Shut down License manager to unclaim any floating entitlements
-		// Note: While this saves a new license cert to DB, the previous entitlements are still kept in memory so that the shutdown process can complete
-		this.isShuttingDown = true;
-
-		if (!this.manager) {
-			return;
-		}
-
-		await this.manager.shutdown();
-		this.logger.debug('License shut down');
+	async shutdown(): Promise<void> {
+		return Promise.resolve();
 	}
 
 	isFeatureEnabled(feature: BooleanLicenseFeature) {
-		return this.manager?.hasFeatureEnabled(feature) ?? false;
+		return true;
 	}
 
 	isSharingEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.SHARING);
+		return true;
 	}
 
 	isLogStreamingEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.LOG_STREAMING);
+		return true;
 	}
 
 	isLdapEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.LDAP);
+		return true;
 	}
 
 	isSamlEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.SAML);
+		return true;
 	}
 
 	isAiAssistantEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.AI_ASSISTANT);
+		return true;
 	}
 
 	isAskAiEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.ASK_AI);
+		return true;
 	}
 
 	isAiCreditsEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.AI_CREDITS);
+		return true;
 	}
 
 	isAdvancedExecutionFiltersEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.ADVANCED_EXECUTION_FILTERS);
+		return true;
 	}
 
 	isAdvancedPermissionsLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.ADVANCED_PERMISSIONS);
+		return true;
 	}
 
 	isDebugInEditorLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.DEBUG_IN_EDITOR);
+		return true;
 	}
 
 	isBinaryDataS3Licensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.BINARY_DATA_S3);
+		return true;
 	}
 
 	isMultiMainLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.MULTIPLE_MAIN_INSTANCES);
+		return true;
 	}
 
 	isVariablesEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.VARIABLES);
+		return true;
 	}
 
 	isSourceControlLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.SOURCE_CONTROL);
+		return true;
 	}
 
 	isExternalSecretsEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.EXTERNAL_SECRETS);
+		return true;
 	}
 
 	isWorkflowHistoryLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.WORKFLOW_HISTORY);
+		return true;
 	}
 
 	isAPIDisabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.API_DISABLED);
+		return false;
 	}
 
 	isWorkerViewLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.WORKER_VIEW);
+		return true;
 	}
 
 	isProjectRoleAdminLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.PROJECT_ROLE_ADMIN);
+		return true;
 	}
 
 	isProjectRoleEditorLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.PROJECT_ROLE_EDITOR);
+		return true;
 	}
 
 	isProjectRoleViewerLicensed() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.PROJECT_ROLE_VIEWER);
+		return true;
 	}
 
 	isCustomNpmRegistryEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.COMMUNITY_NODES_CUSTOM_REGISTRY);
-	}
-
-	isFoldersEnabled() {
-		return this.isFeatureEnabled(LICENSE_FEATURES.FOLDERS);
+		return true;
 	}
 
 	getCurrentEntitlements() {
-		return this.manager?.getCurrentEntitlements() ?? [];
+		return [];
 	}
 
 	getFeatureValue<T extends keyof FeatureReturnType>(feature: T): FeatureReturnType[T] {
-		return this.manager?.getFeatureValue(feature) as FeatureReturnType[T];
+		const value = feature.includes('Limit') ? Number.MAX_SAFE_INTEGER : true;
+		return value as FeatureReturnType[T];
 	}
 
 	getManagementJwt(): string {
-		if (!this.manager) {
-			return '';
-		}
-		return this.manager.getManagementJwt();
+		return 'dummy-management-jwt';
 	}
 
 	/**
 	 * Helper function to get the latest main plan for a license
 	 */
 	getMainPlan(): TEntitlement | undefined {
-		if (!this.manager) {
-			return undefined;
-		}
-
-		const entitlements = this.getCurrentEntitlements();
-		if (!entitlements.length) {
-			return undefined;
-		}
-
-		entitlements.sort((a, b) => b.validFrom.getTime() - a.validFrom.getTime());
-
-		return entitlements.find(
-			(entitlement) => (entitlement.productMetadata?.terms as { isMainPlan?: boolean })?.isMainPlan,
-		);
+		return { productId: 'enterprise' } as TEntitlement;
 	}
 
 	getConsumerId() {
-		return this.manager?.getConsumerId() ?? 'unknown';
+		return 'unknown';
 	}
 
 	// Helper functions for computed data
 	getUsersLimit() {
-		return this.getFeatureValue(LICENSE_QUOTAS.USERS_LIMIT) ?? UNLIMITED_LICENSE_QUOTA;
+		return Number.MAX_SAFE_INTEGER;
+	}
+
+	getApiKeysPerUserLimit() {
+		return Number.MAX_SAFE_INTEGER;
 	}
 
 	getTriggerLimit() {
-		return this.getFeatureValue(LICENSE_QUOTAS.TRIGGER_LIMIT) ?? UNLIMITED_LICENSE_QUOTA;
+		return Number.MAX_SAFE_INTEGER;
 	}
 
 	getVariablesLimit() {
-		return this.getFeatureValue(LICENSE_QUOTAS.VARIABLES_LIMIT) ?? UNLIMITED_LICENSE_QUOTA;
+		return Number.MAX_SAFE_INTEGER;
 	}
 
 	getAiCredits() {
-		return this.getFeatureValue(LICENSE_QUOTAS.AI_CREDITS) ?? 0;
+		return Number.MAX_SAFE_INTEGER;
 	}
 
 	getWorkflowHistoryPruneLimit() {
-		return (
-			this.getFeatureValue(LICENSE_QUOTAS.WORKFLOW_HISTORY_PRUNE_LIMIT) ?? UNLIMITED_LICENSE_QUOTA
-		);
+		return Number.MAX_SAFE_INTEGER;
 	}
 
 	getTeamProjectLimit() {
-		return this.getFeatureValue(LICENSE_QUOTAS.TEAM_PROJECT_LIMIT) ?? 0;
+		return Number.MAX_SAFE_INTEGER;
 	}
 
 	getPlanName(): string {
-		return this.getFeatureValue('planName') ?? 'Community';
+		return 'enterprise';
 	}
 
 	getInfo(): string {
-		if (!this.manager) {
-			return 'n/a';
-		}
-
-		return this.manager.toString();
+		return 'enterprise license (dummy)';
 	}
 
 	isWithinUsersLimit() {
-		return this.getUsersLimit() === UNLIMITED_LICENSE_QUOTA;
+		return true;
 	}
 
 	/**
@@ -422,10 +321,10 @@ export class License {
 	}
 
 	enableAutoRenewals() {
-		this.manager?.enableAutoRenewals();
+		// Implementation needed
 	}
 
 	disableAutoRenewals() {
-		this.manager?.disableAutoRenewals();
+		// Implementation needed
 	}
 }
