@@ -4,7 +4,7 @@ run-name: Build ${{ inputs.branch }} - ${{ inputs.user }}
 on:
   push:
     branches:
-      - master-noro
+      - master-wisy
     tags:
       - v*
   workflow_dispatch:
