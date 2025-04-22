@@ -430,7 +430,7 @@ export class License implements LicenseProvider {
 	}
 
 	getPlanName(): string {
-		return this.getValue('planName') ?? 'Community';
+		return 'Enterprise';
 	}
 
 	getInfo(): string {
