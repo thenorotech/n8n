@@ -59,7 +59,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ env.IMAGE_NAME_LOWER }}:1.92.0,${{ env.IMAGE_NAME_LOWER }}:${{ github.sha }}
+          tags: ${{ env.IMAGE_NAME_LOWER }}:1.108.0,${{ env.IMAGE_NAME_LOWER }}:${{ github.sha }}
 
       - name: Call Success URL - optionally
         if: ${{ github.event.inputs.success-url != '' }}
