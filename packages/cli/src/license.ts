@@ -236,22 +236,22 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isApiKeyScopesLicensed` instead. */
 	isApiKeyScopesEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.API_KEY_SCOPES);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isAiAssistantLicensed` instead. */
 	isAiAssistantEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.AI_ASSISTANT);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isAskAiLicensed` instead. */
 	isAskAiEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.ASK_AI);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isAiCreditsLicensed` instead. */
 	isAiCreditsEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.AI_CREDITS);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isAdvancedExecutionFiltersLicensed` instead. */
@@ -276,12 +276,12 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isMultiMainLicensed` instead. */
 	isMultiMainLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.MULTIPLE_MAIN_INSTANCES);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isVariablesLicensed` instead. */
 	isVariablesEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.VARIABLES);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isSourceControlLicensed` instead. */
@@ -291,7 +291,7 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isExternalSecretsLicensed` instead. */
 	isExternalSecretsEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.EXTERNAL_SECRETS);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isWorkflowHistoryLicensed` instead. */
@@ -301,27 +301,27 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isAPIDisabled` instead. */
 	isAPIDisabled() {
-		return this.isLicensed(LICENSE_FEATURES.API_DISABLED);
+		return false;
 	}
 
 	/** @deprecated Use `LicenseState.isWorkerViewLicensed` instead. */
 	isWorkerViewLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.WORKER_VIEW);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isProjectRoleAdminLicensed` instead. */
 	isProjectRoleAdminLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.PROJECT_ROLE_ADMIN);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isProjectRoleEditorLicensed` instead. */
 	isProjectRoleEditorLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.PROJECT_ROLE_EDITOR);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isProjectRoleViewerLicensed` instead. */
 	isProjectRoleViewerLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.PROJECT_ROLE_VIEWER);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isCustomNpmRegistryLicensed` instead. */
@@ -331,7 +331,7 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isFoldersLicensed` instead. */
 	isFoldersEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.FOLDERS);
+		return true;
 	}
 
 	getCurrentEntitlements() {
@@ -392,7 +392,7 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState` instead. */
 	getAiCredits() {
-		return this.getValue(LICENSE_QUOTAS.AI_CREDITS) ?? 0;
+		return this.getValue(LICENSE_QUOTAS.AI_CREDITS) ?? 9999;
 	}
 
 	/** @deprecated Use `LicenseState` instead. */
@@ -402,7 +402,7 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState` instead. */
 	getTeamProjectLimit() {
-		return this.getValue(LICENSE_QUOTAS.TEAM_PROJECT_LIMIT) ?? 0;
+		return this.getValue(LICENSE_QUOTAS.TEAM_PROJECT_LIMIT) ?? 9999;
 	}
 
 	getPlanName(): string {
