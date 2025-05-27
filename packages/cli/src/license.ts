@@ -216,22 +216,22 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isSharingLicensed` instead. */
 	isSharingEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.SHARING);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isLogStreamingLicensed` instead. */
 	isLogStreamingEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.LOG_STREAMING);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isLdapLicensed` instead. */
 	isLdapEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.LDAP);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isSamlLicensed` instead. */
 	isSamlEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.SAML);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isApiKeyScopesLicensed` instead. */
@@ -256,22 +256,22 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isAdvancedExecutionFiltersLicensed` instead. */
 	isAdvancedExecutionFiltersEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.ADVANCED_EXECUTION_FILTERS);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isAdvancedPermissionsLicensed` instead. */
 	isAdvancedPermissionsLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.ADVANCED_PERMISSIONS);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isDebugInEditorLicensed` instead. */
 	isDebugInEditorLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.DEBUG_IN_EDITOR);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isBinaryDataS3Licensed` instead. */
 	isBinaryDataS3Licensed() {
-		return this.isLicensed(LICENSE_FEATURES.BINARY_DATA_S3);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isMultiMainLicensed` instead. */
@@ -286,7 +286,7 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isSourceControlLicensed` instead. */
 	isSourceControlLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.SOURCE_CONTROL);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isExternalSecretsLicensed` instead. */
@@ -296,7 +296,7 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isWorkflowHistoryLicensed` instead. */
 	isWorkflowHistoryLicensed() {
-		return this.isLicensed(LICENSE_FEATURES.WORKFLOW_HISTORY);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isAPIDisabled` instead. */
@@ -326,7 +326,7 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isCustomNpmRegistryLicensed` instead. */
 	isCustomNpmRegistryEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.COMMUNITY_NODES_CUSTOM_REGISTRY);
+		return true;
 	}
 
 	/** @deprecated Use `LicenseState.isFoldersLicensed` instead. */
